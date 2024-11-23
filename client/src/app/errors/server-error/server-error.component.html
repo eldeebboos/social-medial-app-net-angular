@@ -1,0 +1,23 @@
+<h4>Internal server error</h4>
+@if (error) {
+<h5 class="text-danger">Error: {{ error.message }}</h5>
+<p class="font-weight-bold">Note: This is an internal server error</p>
+
+<p>What is next?</p>
+<ol>
+  <li>Check your network connection</li>
+  <li>If the problem persists, contact the system administrator</li>
+  <li>Try refreshing the page</li>
+  <li>examin the URL</li>
+  <li>Check chrome dev tool</li>
+  <li>Check Postman tool</li>
+</ol>
+
+<p class="font-weight-bold">
+  check the following stack trace - check the first 2 lines this will tell you
+  the exact issue and which line of code that have proplem
+</p>
+<code class="mt-5" style="background-color: whitesmoke">
+  {{ error.details }}
+</code>
+}
