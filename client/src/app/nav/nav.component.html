@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Social Media App</a>
+    @if (accountService.currentUser()) {
+    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      <li class="nav-item">
+        <a class="nav-link">Matches</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link">Lists</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link">Messages</a>
+      </li>
+    </ul>
+    } @if (accountService.currentUser()) {
+    <div class="dropdown" dropdown>
+      <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle
+        >Welcome {{ accountService.currentUser()?.username }}</a
+      >
+      <div class="dropdown-menu" *dropdownMenu>
+        <a class="dropdown-item">Edit profile</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+    } @else{
+    <form
+      class="d-flex"
+      #loginForm="ngForm"
+      (ngSubmit)="login()"
+      autocomplete="off"
+    >
+      <input
+        class="form-control me-2"
+        type="text"
+        placeholder="Username"
+        name="username"
+        [(ngModel)]="model.username"
+      />
+      <input
+        class="form-control me-2"
+        type="password"
+        placeholder="Password"
+        name="password"
+        [(ngModel)]="model.password"
+      />
+      <button class="btn btn-outline-success" type="submit">Login</button>
+    </form>
+    }
+  </div>
+</nav>
