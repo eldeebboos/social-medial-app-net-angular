@@ -2,17 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/User';
 import { map } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   private http = inject(HttpClient);
-  URL = 'http://localhost:5000/api/';
+  URL = environment.apiUrl + 'account';
   currentUser = signal<User | null>(null);
 
   login(model: any) {
-    return this.http.post<User>(`${this.URL}account/login`, model).pipe(
+    return this.http.post<User>(`${this.URL}/login`, model).pipe(
       map((user) => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
@@ -24,7 +25,7 @@ export class AccountService {
   }
 
   register(model: any) {
-    return this.http.post<User>(`${this.URL}account/register`, model).pipe(
+    return this.http.post<User>(`${this.URL}/register`, model).pipe(
       map((user) => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
