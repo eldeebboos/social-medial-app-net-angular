@@ -27,6 +27,9 @@ public static class ApplicationServiceExtentions
         //using auto mapper (all classes that implement Profile class)
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        services.Configure<CloudinarySettings>(config.GetSection("cloudinarySettings"));
+        services.AddScoped<IPhotoService, PhotoService>();
+
         return services;
     }
 }
