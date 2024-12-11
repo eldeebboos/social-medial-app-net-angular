@@ -1,29 +1,91 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+<form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
   <h2 class="text-center text-primary">Sign up</h2>
   <hr />
-  <div class="mb-3 form-floating">
-    <input
-      type="text"
-      class="form-control"
-      name="username"
-      [(ngModel)]="model.username"
-      required
-      placeholder="Username"
-    />
-    <label for="username">Username</label>
+
+  <div class="mb-3">
+    <label style="margin-right: 10px">I'm a: </label>
+    <label class="form-check-label">
+      <input
+        type="radio"
+        name="gender"
+        class="form-check-input"
+        value="male"
+        formControlName="gender"
+      />
+      Male
+    </label>
+    <label class="form-check-label">
+      <input
+        type="radio"
+        name="gender"
+        class="form-check-input"
+        value="female"
+        formControlName="gender"
+      />
+      Female
+    </label>
   </div>
 
-  <div class="mb-3 form-floating">
-    <input
-      type="password"
-      class="form-control"
-      name="password"
-      [(ngModel)]="model.password"
-      required
-      placeholder="Password"
-    />
-    <label for="password">Password</label>
+  <app-text-input
+    [formControl]="$any(registerForm.get('username'))"
+    lable="Username"
+    placeholder="Username"
+    [type]="'text'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="$any(registerForm.get('knownAs'))"
+    lable="KnownAs"
+    placeholder="KnownAs"
+    [type]="'text'"
+  ></app-text-input>
+
+  <app-date-picker
+    [formControl]="$any(registerForm.get('dateOfBirth'))"
+    lable="Date Of Birth"
+    placeholder="Date Of Birth"
+    [maxDate]="maxDate"
+  />
+
+  <app-text-input
+    [formControl]="$any(registerForm.get('city'))"
+    lable="City"
+    placeholder="City"
+    [type]="'text'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="$any(registerForm.get('country'))"
+    lable="Country"
+    placeholder="Country"
+    [type]="'text'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="$any(registerForm.get('password'))"
+    lable="Password"
+    placeholder="Password"
+    [type]="'passsword'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="$any(registerForm.get('confirmPassword'))"
+    lable="Confirm Password"
+    placeholder="Confirm Password"
+    [type]="'passsword'"
+  ></app-text-input>
+
+  @if (validateionErrors) {
+  <div class="alert alert-danger text-start">
+    <ul>
+      @for (error of validateionErrors; track $index) {
+      <li>{{ error }}</li>
+      }
+    </ul>
   </div>
+
+  }
+  
 
   <div class="form-group text-center">
     <button type="submit" class="btn btn-success me-2">Register</button>

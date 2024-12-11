@@ -23,6 +23,8 @@ public class AutoMapperProfiles : Profile
                             .Url));
         CreateMap<Photo, PhotoDto>();
         CreateMap<MemberUpdateDto, AppUser>();
+        CreateMap<RegisterDto, AppUser>();
+        CreateMap<string, DateOnly>().ConstructUsing(s => DateOnly.Parse(s));
     }
 
 }
