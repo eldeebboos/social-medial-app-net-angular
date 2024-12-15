@@ -3,6 +3,7 @@ using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using API.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extentions;
@@ -29,6 +30,9 @@ public static class ApplicationServiceExtentions
 
         services.Configure<CloudinarySettings>(config.GetSection("cloudinarySettings"));
         services.AddScoped<IPhotoService, PhotoService>();
+
+        //To log the user activity after any changes / calling the apis
+        services.AddScoped<LogUserActivity>();
 
         return services;
     }

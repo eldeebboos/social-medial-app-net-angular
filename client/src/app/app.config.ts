@@ -13,6 +13,7 @@ import { errorInterceptor } from './_interceptor/error.interceptor';
 import { jwtInterceptor } from './_interceptor/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
+import { TimeagoModule } from 'ngx-timeago';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,6 +30,6 @@ export const appConfig: ApplicationConfig = {
       progressBar: true,
       progressAnimation: 'decreasing',
     }),
-    importProvidersFrom(NgxSpinnerModule),
+    importProvidersFrom(NgxSpinnerModule, TimeagoModule.forRoot()),
   ],
 };
