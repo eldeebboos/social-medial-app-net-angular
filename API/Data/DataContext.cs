@@ -9,6 +9,7 @@ public class DataContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<AppUser> Users { get; set; }
     public DbSet<UserLike> Likes { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -29,5 +30,16 @@ public class DataContext(DbContextOptions options) : DbContext(options)
             .OnDelete(DeleteBehavior.Cascade);
         //on using Sql Server database
         // .OnDelete(DeleteBehavior.NoAction);
+
+
+        builder.Entity<Message>()
+            .HasOne(x => x.Recipient)
+            .WithMany(l => l.MessagesReceived)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Message>()
+            .HasOne(x => x.Sender)
+            .WithMany(l => l.MessagesSent)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
