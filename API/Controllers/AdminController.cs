@@ -18,7 +18,7 @@ public class AdminController(UserManager<AppUser> userManager) : BaseApiControll
                     .Select(x => new
                     {
                         x.Id,
-                        Usename = x.UserName,
+                        Username = x.UserName,
                         Roles = x.UserRoles.Select(x => x.Role.Name).ToList()
                     }).ToListAsync();
         return Ok(users);
@@ -28,24 +28,25 @@ public class AdminController(UserManager<AppUser> userManager) : BaseApiControll
     [HttpPost("edit-roles/{username}")]
     public async Task<ActionResult> EditRoles(string username, string roles)
     {
-        if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role.");
+        if (string.IsNullOrEmpty(roles)) return BadRequest("you must select at least one role");
 
         var selectedRoles = roles.Split(",").ToArray();
 
         var user = await userManager.FindByNameAsync(username);
+
         if (user == null) return BadRequest("User not found");
 
         var userRoles = await userManager.GetRolesAsync(user);
 
-        var results = await userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+        var result = await userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
 
-        if (!results.Succeeded) return BadRequest("Failed to add to roles");
+        if (!result.Succeeded) return BadRequest("Failed to add to roles");
 
-        results = await userManager.RemoveFromRolesAsync(user, selectedRoles.Except(selectedRoles));
+        result = await userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
 
-        if (!results.Succeeded) return BadRequest("Failed to remove to roles");
+        if (!result.Succeeded) return BadRequest("Failed to remove from roles");
+
         return Ok(await userManager.GetRolesAsync(user));
-
     }
 
 
