@@ -33,6 +33,25 @@ public static class IdentityServiceExtentions
                     ValidateIssuer = false,
                     ValidateAudience = false,
                 };
+
+                //add authintication support in SignalR/Websocket 
+                option.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        //use context.Request.Query in websocket instead of headers in http
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                // next step ==>need to adjust CORS configuration in program.cs
             });
 
         services.AddAuthorizationBuilder()

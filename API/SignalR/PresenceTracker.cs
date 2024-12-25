@@ -1,0 +1,56 @@
+using System;
+
+namespace API.SignalR;
+
+public class PresenceTracker
+{
+    private static readonly Dictionary<string, List<string>> OnlineUsers = [];
+    public Task UserConnected(string username, string connectionId)
+    {
+        var isOnline = false;
+        lock (OnlineUsers)
+        {
+            if (OnlineUsers.ContainsKey(username))
+            {
+                OnlineUsers[username].Add(connectionId);
+            }
+            else
+            {
+                OnlineUsers.Add(username, [connectionId]);
+                isOnline = true;
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+    public Task UserDisconnected(string username, string connectionId)
+    {
+        var isOffline = false;
+        lock (OnlineUsers)
+        {
+            if (!OnlineUsers.ContainsKey(username))
+                return Task.CompletedTask;
+
+            OnlineUsers[username].Remove(connectionId);
+
+            if (OnlineUsers[username].Count == 0)
+            {
+                OnlineUsers.Remove(username);
+                isOffline = true;
+            }
+
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task<string[]> getOnlineUsers()
+    {
+        string[] onlineUsers;
+        lock (OnlineUsers)
+        {
+            onlineUsers = OnlineUsers.OrderBy(k => k.Key).Select(k => k.Key).ToArray();
+        }
+
+        return Task.FromResult(onlineUsers);
+    }
+}

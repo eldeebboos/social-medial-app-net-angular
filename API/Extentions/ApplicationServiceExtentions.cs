@@ -3,6 +3,7 @@ using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,9 @@ public static class ApplicationServiceExtentions
 
         //To log the user activity after any changes / calling the apis
         services.AddScoped<LogUserActivity>();
+
+        services.AddSignalR();
+        services.AddSingleton<PresenceTracker>();
 
         return services;
     }
