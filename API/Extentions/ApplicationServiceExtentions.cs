@@ -33,6 +33,7 @@ public static class ApplicationServiceExtentions
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<ILikesRepository, LikesRepository>();
         services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         //To log the user activity after any changes / calling the apis
         services.AddScoped<LogUserActivity>();

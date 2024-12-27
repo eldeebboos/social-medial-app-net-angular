@@ -52,7 +52,7 @@ public class AdminController(UserManager<AppUser> userManager) : BaseApiControll
 
     [Authorize(Policy = "ModeratorPhotoRole")]
     [HttpGet("photos-to-moderate")]
-    public async Task<ActionResult> GetPhotosForModeration()
+    public ActionResult GetPhotosForModeration()
     {
         return Ok("Only Admins or Moderators can see this.");
     }
