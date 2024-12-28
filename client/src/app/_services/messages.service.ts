@@ -14,12 +14,14 @@ import {
 } from '@microsoft/signalr';
 import { User } from '../_models/User';
 import { Group } from '../_models/group';
+import { BusyService } from './busy.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessagesService {
   private http = inject(HttpClient);
+  private busyService = inject(BusyService);
   baseUrl = environment.apiUrl;
   hubUrl = environment.hubsUrl;
   hubConnection?: HubConnection;
@@ -27,6 +29,7 @@ export class MessagesService {
   messageThread = signal<Message[]>([]);
 
   createHubConnection(user: User, otherUsername: string) {
+    this.busyService.busy();
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'message?user=' + otherUsername, {
         accessTokenFactory: () => user.token,
@@ -34,7 +37,10 @@ export class MessagesService {
       .withAutomaticReconnect()
       .build();
 
-    this.hubConnection.start().catch((e) => console.log(e));
+    this.hubConnection
+      .start()
+      .catch((e) => console.log(e))
+      .finally(() => this.busyService.idle());
 
     this.hubConnection.on('ReceivedMessagesThread', (messages) => {
       this.messageThread.set(messages);
