@@ -33,6 +33,13 @@ app.UseCors(
 app.UseAuthentication();
 app.UseAuthorization();
 
+//Use the wwwroot folder
+//for publishing the angular application side by side with .net dlls
+app.UseDefaultFiles();
+app.UseStaticFiles();
+//Support routing of angular/fix the routing issue in angular/pass the routng responisbility to angular
+app.MapFallbackToController("Index", "Fallback");
+
 app.MapControllers();
 
 //Add hub to use in SignalR

@@ -45,9 +45,10 @@ public class DataContext(DbContextOptions options)
             .HasOne(s => s.TargetUser)
             .WithMany(l => l.LikedByUsers)
             .HasForeignKey(s => s.TargetUserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // For Sqlite
+        // .OnDelete(DeleteBehavior.Cascade);
         //on using Sql Server database
-        // .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.NoAction);
 
 
         builder.Entity<Message>()
